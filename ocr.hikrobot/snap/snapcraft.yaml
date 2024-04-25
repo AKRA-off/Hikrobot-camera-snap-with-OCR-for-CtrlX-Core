@@ -1,0 +1,171 @@
+name: ocr-hikrobot
+title: OCR reader for Hikrobot camera
+version: 1.0.0
+summary: OCR detection software written in Python for ctrlX CORE.
+description: |
+  OCR detection software written in Python for ctrlX CORE.
+base: core22
+confinement: strict
+grade: stable
+
+architectures:
+  - build-on: arm64
+ # - build-on: amd64
+
+
+apps:
+  client:
+    command: bin/main.py
+    plugs:
+      - network
+      - network-bind
+      - network-control
+      - network-status
+      - network-setup-control
+      - datalayer
+      - home
+      - system-observe
+      - system-files
+      - shared-memory
+      - active-solution
+      - camera
+      - serial-port
+    daemon: simple
+    restart-condition: always
+    passthrough:
+      restart-delay: 30s
+    environment:
+        "LD_LIBRARY_PATH": "$LD_LIBRARY_PATH:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/lapack:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/blas:$SNAP/usr/lib/python3.10/dist-packages:$SNAP/opt/MVS/bin:$SNAP/opt/MVS/lib/aarch64:$SNAP/opt/MVS/lib/aarch64:$SNAP/opt/MVS/lib/aarch64"
+        MVCAM_SDK_PATH: $SNAP/opt/MVS
+        MVCAM_COMMON_RUNENV: $SNAP/opt/MVS/lib/
+        MVCAM_MVS_LIBENV: $SNAP/opt/MVS/lib/
+        MVCAM_GENICAM_CLPROTOCOL: $SNAP/opt/MVS/lib/CLProtocol
+        TESSDATA_PREFIX: $SNAP/usr/share/tesseract-ocr/5/tessdata/
+        GENICAM_CACHE_V3_1: $TMP 
+  
+  activeconfiguration:
+    command: ./bin/set_env_path.sh
+    daemon: simple
+    plugs: [network, network-bind, active-solution]
+
+package-repositories:
+  - type: apt
+    ppa: alex-p/tesseract-ocr5
+    #priority: always
+
+parts:
+  client:
+    plugin: python
+    source: .
+    build-environment:
+      - PYTHONPATH: "$SNAPCRAFT_PART_INSTALL/usr/lib/python3/dist-packages"
+    override-build: |
+      snapcraftctl build
+      ln -sf ../usr/lib/libsnapcraft-preload.so $SNAPCRAFT_PART_INSTALL/lib/libsnapcraft-preload.so
+    stage-packages:
+      - gcc-x86-64-linux-gnu
+      - gfortran
+      - libzmq5
+      - ctrlx-datalayer
+      - libsystemd-dev
+      - python3-opencv
+      - libblas-dev
+      - liblapack-dev
+      - python3-dev
+      - python3-wheel
+      - libatlas-base-dev
+      - tesseract-ocr
+      - tesseract-ocr-eng
+      #- tesseract-ocr-all
+      - libtesseract-dev
+    python-packages:
+      - numpy==1.26.3
+      - pyModbusTCP
+      - wheel
+      - opencv-python
+      - ctrlx_datalayer
+      - ctrlx-fbs
+      - regex
+      - pytesseract
+      - config
+      - pyzmq
+      - ipykernel
+    build-packages:
+      - python3-dev
+      - python3-wheel
+      - build-essential
+      - python3-setuptools
+      - libzbar0
+      - libzbar-dev
+      - libatlas-base-dev
+  
+
+  configs:     ##IMPORTANT PART for the package manifest file  <-------------------------------------------
+    source: ./configs
+    plugin: dump   ##With this plugin the content of the source is brought to the defined folder. In this case, what is inside the ./configs folder is copied to a package-assets/ folder
+    organize:
+      'package-assets/*': package-assets/${SNAPCRAFT_PROJECT_NAME}/
+
+  activeconfiguration:
+    source: ./configs/
+    plugin: dump
+    organize:
+      '*': bin/
+  
+  flask-dependencies:
+    source: .
+    plugin: dump
+    organize:
+      'dependencies/*': bin/   #Copies the content inside dependencies (for that /* is required) into the bin folder
+
+  datalayerdeb:
+    plugin: dump
+    source: https://github.com/boschrexroth/ctrlx-automation-sdk/releases/download/2.4.0/ctrlx-datalayer-2.4.5.deb
+    source-type: deb
+
+  pylondeb:
+    plugin: dump
+    source: /home/boschrexroth/boschrexroth/SDK/ctrlx-automation-sdk-2.4.3/ctrlx-automation-sdk/CUSTOM/Hik/opt.tar
+    source-type: tar
+    organize:
+      '*': opt/
+  
+hooks:  # This part is for the hooks section located in snap/hooks. These files contain some scripts that are executed in certain times
+    connect-plug-active-solution:  #Plug added to the hook so that the active configuration can be manipulated (Same name as the executable file)
+        plugs: [active-solution]
+
+plugs:
+  datalayer:
+    interface: content
+    content: datalayer
+    target: $SNAP_DATA/.datalayer
+  
+  system-files:
+    interface: system-files
+    write: [/dev/shm, /proc/sys/net/core, /usr/bin, /usr/bin/mount, /proc]
+
+  shared-memory:
+    interface: shared-memory
+    private: true
+
+  active-solution:  
+    interface: content
+    content: solutions
+    target: $SNAP_COMMON/solutions
+
+slots:
+    # This slot is for sidebar integration
+    package-assets:         #This slot lets certain files be available outside the snap
+        interface: content
+        content: package-assets
+        source:
+            read:
+            - $SNAP/package-assets/${SNAPCRAFT_PROJECT_NAME}
+    package-run:
+        interface: content
+        content: package-run
+        source:
+            write:
+            - $SNAP_DATA/package-run/${SNAPCRAFT_PROJECT_NAME}
+
+

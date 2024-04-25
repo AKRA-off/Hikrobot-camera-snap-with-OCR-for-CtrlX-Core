@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.boschrexroth.com/ctrlx-automation/ctrlx-core/apps/package-manifest/package-manifest.v1.1.schema.json",
+  "version": "1.0.0",
+  "id": "active",
+  "configuration": {
+    "appDirectories": [
+      {
+        "name": "active",
+        "description": "OCR Reader",
+        "icon": "bosch-ic-video-sensor",  
+        "copyOnLoad": true
+      }
+    ]
+  },
+  "menus": {
+    "sidebar": [
+      {
+        "id": "active",
+        "title": "OCR Reader",
+        "icon": "bosch-ic-video-sensor",
+        "items": [
+          {
+            "id": "active",
+            "target": "_blank",
+            "title": "Webpage",
+            "icon": "bosch-ic-video-sensor",
+            "link": "http://${hostname}:8001/"
+          }
+        ]
+      }
+    ],
+    "settings": [
+    ],
+    "overview": [
+      {
+        "id": "active",
+        "target": "_blank",
+        "title": "OCR Reader",
+        "icon": "bosch-ic-video-sensor",
+        "link": "http://${hostname}:8001/"
+      }
+    ]    
+  }
+}

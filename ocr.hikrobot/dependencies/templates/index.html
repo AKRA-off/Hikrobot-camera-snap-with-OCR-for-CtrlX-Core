@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>OCR Webpage</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: Arial, sans-serif; /* Changed font family to Arial */
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #ececec; /* Updated background color */
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #fff; /* Updated background color */
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Added box shadow */
+      display: flex; /* Added flex display */
+      flex-wrap: wrap; /* Allow items to wrap */
+    }
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+    }
+    .header-container {
+      margin-bottom: 20px; /* Added margin bottom to separate header from other elements */
+      flex-basis: 100%; /* Full width for header */
+    }
+    .text-container {
+      flex-basis: 50%; /* 50% width */
+      padding: 20px;
+      background-color: #f6f6f6; /* Updated background color */
+      border: 2px solid #003399;
+      border-radius: 8px;
+      margin-right: 20px; /* Added margin-right */
+      margin-bottom: 20px; /* Added margin bottom to separate from other elements */
+    }
+    .text-container h2 {
+      font-size: 24px;
+      color: #003399;
+      margin-bottom: 20px;
+    }
+    .text-container p {
+      font-size: 18px;
+      color: #333;
+      line-height: 1.6;
+    }
+    .steps p, .results p {
+      font-size: 24px;
+      color: #003399;
+      margin: 10px 0;
+    }
+    .steps p:first-child, .results p:first-child {
+      border-bottom: 2px solid #003399; /* Added border bottom */
+      padding-bottom: 10px; /* Added padding bottom */
+    }
+    form {
+      margin-top: 20px;
+    }
+    input[type=text], input[type=submit], .settings-btn, .help-btn {
+      font-size: 16px; /* Smaller font size */
+      padding: 12px; /* Larger padding */
+      border: 1px solid #003399;
+      border-radius: 4px;
+      margin-right: 10px;
+      color: #003399;
+      background-color: #fff; /* Updated background color */
+      cursor: pointer;
+    }
+    input[type=submit] {
+      background-color: #003399;
+      color: white;
+      border: none;
+    }
+    .settings-btn, .help-btn {
+      background-color: #003399;
+      color: white;
+      margin-top: 20px; /* Increase distance from other buttons */
+    }
+    .settings-popup, .help-popup {
+      display: none;
+      position: fixed;
+      padding: 20px;
+      background-color: #f9f9f9; /* Updated background color */
+      border: 2px solid #003399;
+      border-radius: 8px;
+      z-index: 1000; /* Added z-index to keep the pop-up above other content */
+    }
+    .settings-popup p, .help-popup p {
+      font-size: 18px;
+      color: #003399;
+    }
+    .image-container {
+      border: 2px solid #003399;
+      margin: 50px 0 20px 0; /* Adjusted margin to separate image_mat from other elements */
+      width: calc(50% - 20px); /* 50% width minus margin and padding */
+      height: 486px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header-container">
+      <img src="{{url_for('static', filename='image/ctrlX_Header.jpg')}}" alt="Header Image">
+    </div>
+    <div class="text-container">
+      <div class="results">
+        <p style="border-bottom: 2px solid #003399; padding-bottom: 10px;"><strong>Processing Results:</strong></p>
+        <p>Your Email - {{ email_ext }}</p>
+        <p>Process Time - {{ time_toweb }} s</p>
+      </div>
+      <p>Current step - {{ variable }}</p>
+      <form action="{{ url_for('index') }}" method="post">
+        <input type="text" value="1" name="variable" placeholder="Enter Step">
+        <input type="submit" value="Set">
+      </form>
+      <div class="settings-btn" onclick="toggleSettings()">Settings</div>
+      <div class="settings-popup" id="settingsPopup">
+        <p style="border-bottom: 2px solid #003399; padding-bottom: 10px;"><strong>Settings:</strong></p>
+        <p>Modbus Server IP: {{ ip_modbus }}</p>
+        <form action="{{ url_for('index') }}" method="post">
+          <input type="text" value="192.168.1.1" name="ip_modbus" placeholder="Enter Modbus Server IP" pattern="\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}">
+          <input type="submit" value="Set">
+        </form>
+        <p>Image Downscale Ratio: {{ img_scale }}</p>
+        <form action="{{ url_for('index') }}" method="post">
+          <input type="text" value="2" name="img_scale" placeholder="Enter Ratio" min="1" max="10">
+          <input type="submit" value="Set">
+        </form>
+        <p>JPEG quality (0-100%): {{ jpeg_quality }}</p>
+        <form action="{{ url_for('index') }}" method="post">
+          <input type="text" value="90" name="jpeg_quality" placeholder="Enter % of Quality" min="1" max="100">
+          <input type="submit" value="Set">
+        </form>
+      </form>
+      <p>Regex search rule: {{ reg_string }}</p>
+      <form action="{{ url_for('index') }}" method="post">
+        <input type="text" value="\S+@\S+" name="reg_string" placeholder="Enter rule">
+        <input type="submit" value="Set">
+      </form>
+      </div>
+      <div class="help-btn" onclick="toggleHelp()">Help</div>
+      <div class="help-popup" id="helpPopup">
+        <div class="steps">
+          <p style="border-bottom: 2px solid #003399; padding-bottom: 10px;"><strong>Steps definition:</strong></p>
+          <p>0 - Connect Camera</p>
+          <p>1 - Capture and Process Image</p>
+          <p>2 - Make a Drawing</p>
+        </div>
+      </div>
+      {% with messages = get_flashed_messages() %}
+      {% if messages %}
+      <ul>
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+      {% endwith %}
+    </div>
+    <div class="image-container">
+      <img src="{{url_for('download_file', filename='Image_Mat.jpg')}}" alt="Main Image">
+    </div>
+  </div>
+
+  <script>
+    function toggleSettings() {
+      var popup = document.getElementById("settingsPopup");
+      if (popup.style.display === "block") {
+        popup.style.display = "none";
+      } else {
+        popup.style.display = "block";
+      }
+    }
+
+    function toggleHelp() {
+      var popup = document.getElementById("helpPopup");
+      if (popup.style.display === "block") {
+        popup.style.display = "none";
+      } else {
+        popup.style.display = "block";
+      }
+    }
+  </script>
+</body>
+</html>

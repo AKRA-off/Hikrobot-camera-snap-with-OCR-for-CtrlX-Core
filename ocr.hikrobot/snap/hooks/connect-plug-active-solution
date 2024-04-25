@@ -1,0 +1,4 @@
+#!/bin/sh
+
+mkdir -p $SNAP_COMMON/solutions/activeConfiguration/active/          #Folder is created in ActiveConfiguration/novnc
+#cp $SNAP/websockify/dependencies/Target/target.txt $SNAP_COMMON/solutions/activeConfiguration/novnc/  # The file is copied 
