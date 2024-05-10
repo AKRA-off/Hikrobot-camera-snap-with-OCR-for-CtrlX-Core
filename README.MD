@@ -1,6 +1,4 @@
-![](media/beefc1c2c0bb7d4bb40a660ab2b7e1bd.png)![](media/eac03eb91f02886403231d35bd1108c5.png)![](media/471010db3714f35ea3f9d8220759321b.jpeg)![](media/8c3397db81c68211f463d16518de5b33.jpeg)
-
-![](media/a37a831149ba1fc1fdb1aea9c93dd4b4.jpeg)![](media/538c942da57d1cffe79c8f4bd8ae62a5.jpeg)
+![](media/471010db3714f35ea3f9d8220759321b.jpeg)![](media/538c942da57d1cffe79c8f4bd8ae62a5.jpeg)
 
 # 1. General information
 
