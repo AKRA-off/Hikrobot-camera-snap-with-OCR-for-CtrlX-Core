@@ -89,7 +89,7 @@ def index():
                 jpeg_quality = int(request.form.get("jpeg_quality"))
                 return redirect('/')
             elif request.form.get("reg_string"):
-                jpeg_quality = str(request.form.get("reg_string"))
+                reg_string = str(request.form.get("reg_string"))
                 return redirect('/')
         except:
             print("Wrong data type")
