@@ -1,26 +1,10 @@
-![](media/538c942da57d1cffe79c8f4bd8ae62a5.jpeg)![](media/a37a831149ba1fc1fdb1aea9c93dd4b4.jpeg)![](media/8c3397db81c68211f463d16518de5b33.jpeg)![](media/beefc1c2c0bb7d4bb40a660ab2b7e1bd.png)![](media/471010db3714f35ea3f9d8220759321b.jpeg)![](media/eac03eb91f02886403231d35bd1108c5.png)
+![](media/beefc1c2c0bb7d4bb40a660ab2b7e1bd.png)![](media/eac03eb91f02886403231d35bd1108c5.png)![](media/471010db3714f35ea3f9d8220759321b.jpeg)![](media/8c3397db81c68211f463d16518de5b33.jpeg)
 
-Hikrobot GigE camera and OCR snap for CtrlX Core
-
-Version 01
-
-Content
-
-1\. General information 3
-
-2\. Preparing Hikrobot libraries 5
-
-3\. Python libraries 7
-
-4\. Building project 7
-
-5\. Overall explanation 9
+![](media/a37a831149ba1fc1fdb1aea9c93dd4b4.jpeg)![](media/538c942da57d1cffe79c8f4bd8ae62a5.jpeg)
 
 # 1. General information
 
 In the following document we show you how to create a snap for CtrlX Core to connect Hikrobot industrial GigE cameras and make a simple OCR detection with further data exchange via Modbus TCP server.
-
-Versions used
 
 All the functions and screenshots are based on:
 
@@ -67,32 +51,6 @@ Other useful information can be checked in:
 Source code available on github page:
 
 <https://github.com/AKRA-off/Hikrobot-camera-snap-with-OCR-for-CtrlX-Core/tree/main/ocr.hikrobot>
-
-Hikrobot libraries required for building snap:
-
-[opt.tar](https://bosch-my.sharepoint.com/:u:/r/personal/kra7spb_bosch_com/Documents/Share/CtrlX%20Core%20Hikrobot%20snap/opt.tar?csf=1&web=1&e=S0sXEu)
-
-Ready to use snap:
-
-[ocr-hikrobot_1.0.0_arm64.snap](https://bosch-my.sharepoint.com/:u:/r/personal/kra7spb_bosch_com/Documents/Share/CtrlX%20Core%20Hikrobot%20snap/ocr-hikrobot_1.0.0_arm64.snap?csf=1&web=1&e=FeDChO)
-
-Copyright
-
-© Bosch Rexroth AG 2024
-
-All rights reserved, also regarding any disposal, exploitation, reproduction,
-
-editing, distribution, as well as in the event of applications for industrial
-
-property rights.
-
-Liability
-
-The specified data is intended for product description purposes only and shall not be deemed to be a guaranteed characteristic unless expressly stipulated in the contract. All rights are reserved with respect to the content of this documentation and the availability of the product.
-
-Editorial Department
-
-DCAZ/SLF2-VN [Akra]
 
 # 2. Preparing Hikrobot libraries
 
