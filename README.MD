@@ -153,3 +153,7 @@ CtrlX Core Menu with installed app:
 Webpage:
 
 ![](media/21c51336d6e8f3a80a12f2f7d7095b55.png)
+
+
+License
+SPDX-FileCopyrightText: Bosch Rexroth AG SPDX-License-Identifier: MIT
