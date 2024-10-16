@@ -9,7 +9,7 @@ All the functions and screenshots are based on:
 -   CtrlX WORKS version 2.2.1
 -   CtrlX Core X3
 -   Runtime / Image version of CtrlX Core 2.4.1
--   Raspberri pi 4b with Ubuntu 22.04
+-   Raspberry pi 4b with Ubuntu 22.04
 -   VS Code
 
 Prerequisites
