@@ -1,4 +1,4 @@
-![](media/471010db3714f35ea3f9d8220759321b.jpeg)![](media/538c942da57d1cffe79c8f4bd8ae62a5.jpeg)![Hikrobot 1.3MP, 91.3fps, PoE GigE Camera](media/4b0c2e9e88fca1b433841be7b382adc2.jpeg)
+![](media/538c942da57d1cffe79c8f4bd8ae62a5.jpeg)![Hikrobot 1.3MP, 91.3fps, PoE GigE Camera](media/4b0c2e9e88fca1b433841be7b382adc2.jpeg)
 
 # 1. General information
 
